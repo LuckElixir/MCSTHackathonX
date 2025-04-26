@@ -13,6 +13,11 @@ class Tasks:
         self.type = type
         self.baseHours = baseHours
         self.effort = effort
+
+    
+    def computeXP(self, hours) -> int:
+        XP = None
+        return XP
         self.points = points
         self.base = 1.6
         self.hours: list[float] = []
@@ -63,6 +68,7 @@ class Tasks:
             self.activityList.append(activity)
             self.completion.append(completion_input)
             self.points *= 100
+
 
 
 

@@ -3,7 +3,7 @@ import os
 import numpy
 import matplotlib.pyplot as plt
 import sys
-from login import Login
+from ui.login import Login
 sys.path.append("../")
 import filesave.main as fs
 from PyQt6.QtWidgets import QApplication, QMainWindow, QWidget
@@ -13,10 +13,11 @@ class initWindow(QMainWindow):
         super().__init__()
         self.setWindowTitle("The Anti-Procrastination App")
         self.font = font
+        self.checkSave()
 
     def checkSave(self):
         login = fs.checkLogin()
-        if login:
+        if not login:
             self.loginPage = Login(self)
 
 
@@ -24,12 +25,3 @@ class initWindow(QMainWindow):
 
 
 
-
-# debug:
-if __name__ == "__main__":
-    print(os.getcwd())
-    app = QApplication(sys.argv)
-    window = initWindow("Times new roman")
-    window.show()
-
-    app.exec()
