@@ -1,7 +1,7 @@
 import ui.main
-import enum.Enum
+from enum import Enum
 
-Type = Enum('Type', [('Music', 1), ('Math', 2), ('English', 3)
+Type = Enum('Type', [('Music', 1), ('Math', 2), ('English', 3)])
 
 class Tasks:
     TYPES = []
@@ -12,7 +12,7 @@ class Tasks:
         self.effort = effort
     
     def computeXP(self, hours) -> int:
-        XP = 
+        XP = None
         return XP
 
 class Profile:
