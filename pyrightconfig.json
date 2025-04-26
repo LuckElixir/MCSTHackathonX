@@ -1,0 +1,12 @@
+
+{
+  "include": ["app"],
+  "exclude": ["**/__pycache__"],
+  "strict": true,
+  "pythonVersion": "3.12",
+  "typeCheckingMode": "basic",
+  "venvPath": ".",
+  "venv": ".venv",
+  "extraPaths" : ["C:/Users/vgshi/Desktop/Coding/code-jam-11/.venv/Lib/site-packages"],
+  "reportArgumentType" : "warning"
+}
