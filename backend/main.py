@@ -40,7 +40,7 @@ class Tasks:
             return "Ultimates League"
         return "No League"
 
-    def notify(tit  le, text):
+    def notify(title, text):
         os.system("""
                     osascript -e 'display notification "{}" with title "{}"'
                     """.format(text, title))
