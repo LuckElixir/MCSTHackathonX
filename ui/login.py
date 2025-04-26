@@ -12,17 +12,40 @@ from filesave.main import *
 class Login(QWidget):
     def __init__(self, main):
         super().__init__()
-        self.main : QMainWindow = main
+        self.main = main
         self.loginLayout = QGridLayout()
         self._generateLoginPage()
         self._updateMain()
 
     def _generateLoginPage(self):
+        """
+        Generates the login page for the application.
+
+        This function sets the contents margins of the login layout to 5 pixels on the top and 0 pixels on the left and right.
+        It creates a QLabel widget with the text "Not Enough Time" and a font size of 48 pixels.
+        The text is aligned horizontally and vertically at the center.
+        It creates two QPushButton widgets with the labels "Log In" and "Sign Up", respectively.
+        The font size of the buttons is set to 32 pixels.
+        The clicked signals of the login button and sign up button are connected to the _login and _signup methods, respectively.
+        The QLabel and QPushButton widgets are added to the login layout at specific positions.
+        A QPixmap object is created from an image file named "images/loginImage.jpg".
+        A QLabel widget is created and the QPixmap is set as the pixmap of the label.
+        The label is set to scale its contents to fit the size of the widget.
+        The QLabel widget is added to the login layout at specific positions.
+        The row stretch factors for rows 0, 1, and 2 are set to 2, 1, and 1, respectively.
+        The column stretch factor for column 3 is set to 1.
+
+        Parameters:
+        - self: The instance of the class.
+
+        Return:
+        - None
+        """
         self.loginLayout.setContentsMargins(5, 0, 0, 0)
         loginText = QLabel()
         loginFont = QFont("VCR OSD Mono")
         loginFont.setPointSize(48)
-        loginText.setText("Not Enough Time")
+        loginText.setText("GRINDIFY")
         loginText.setFont(loginFont)
         loginText.setAlignment(Qt.AlignmentFlag.AlignHCenter | Qt.AlignmentFlag.AlignVCenter)
 
@@ -52,6 +75,17 @@ class Login(QWidget):
         self.loginLayout.setColumnStretch(3, 1)
 
     def _login(self):
+        """
+        Initializes the login layout for the user interface.
+
+        This function sets up the login layout for the user interface. It creates a QGridLayout object and sets its contents margins to 5 pixels on the top and 0 pixels on the left and right. It then creates QLabel and QLineEdit widgets for the username and password fields, respectively. The font size of the labels is set to 24 pixels and the placeholder text for the username and password fields is set. The QLineEdit widgets are set to have a fixed size of 200x50 pixels. The QLabel and QLineEdit widgets are added to the login layout at specific positions. A QPushButton widget is created for the login button and its font size is set to 24 pixels. The clicked signal of the login button is connected to the _checkPassword method. A QPixmap object is created from an image file named "images/loginImage.jpg" and a QLabel widget is created. The QPixmap is set as the pixmap of the label and the label is set to scale its contents to fit the size of the widget. The QLabel widget is added to the login layout at specific positions. Finally, the _updateMain method is called.
+
+        Parameters:
+        - self: The instance of the class.
+
+        Return:
+        - None
+        """
         self.loginLayout = QGridLayout()
         self.loginLayout.setContentsMargins(5, 0, 0, 0)
 
@@ -88,6 +122,17 @@ class Login(QWidget):
         self._updateMain()
 
     def _signup(self):
+        """
+        Initializes the signup layout for the user interface.
+
+        This function sets up the signup layout for the user interface. It creates a QGridLayout object and sets its contents margins to 5 pixels on the top and 0 pixels on the left and right. It then creates QLabel and QLineEdit widgets for the username and password fields, respectively. The font size of the labels is set to 24 pixels and the placeholder text for the username and password fields is set. The QLineEdit widgets are set to have a fixed size of 200x50 pixels. The QLabel and QLineEdit widgets are added to the signup layout at specific positions. A QLabel is created for the confirm password field and its font size is set to 24 pixels. The QLineEdit widget for the confirm password field is set to have a fixed size of 200x50 pixels and its echo mode is set to password. The QLabel and QLineEdit widgets for the confirm password field are added to the signup layout at specific positions. A QPushButton widget is created for the signup button and its font size is set to 24 pixels. The clicked signal of the signup button is connected to the _createAccount method. A QPixmap object is created from an image file named "images/loginImage.jpg" and a QLabel widget is created. The QPixmap is set as the pixmap of the label and the label is set to scale its contents to fit the size of the widget. The QLabel widget is added to the signup layout at specific positions. Finally, the _updateMain method is called.
+
+        Parameters:
+        - self: The instance of the class.
+
+        Return:
+        - None
+        """
         self.loginLayout = QGridLayout()
         self.loginLayout.setContentsMargins(5, 0, 0, 0)
 
@@ -134,6 +179,22 @@ class Login(QWidget):
 
 
     def _createAccount(self):
+        """
+        Creates a new account for the user.
+
+        This function retrieves the username, password, and confirm password from the corresponding QLineEdit widgets.
+        If the password and confirm password do not match, a QMessageBox is displayed with the message 'Passwords do not match'.
+        Otherwise, the `createPassword` function is called with the username and password as arguments.
+        A QMessageBox is then displayed with the message 'Account created successfully'.
+        The `login` function is called with the username as an argument.
+        Finally, the `override` method of the `main` attribute of the current object is called.
+
+        Parameters:
+        - self: The instance of the class.
+
+        Return:
+        - None
+        """
         username = self.lineEdit_username.text()
         password = self.lineEdit_password.text()
         confirm_password = self.lineEdit_confirm_password.text()
@@ -141,27 +202,45 @@ class Login(QWidget):
         if password != confirm_password:
             msg = QMessageBox()
             msg.setText('Passwords do not match')
-            msg.exec_()
+            msg.exec()
             return
 
         createPassword(username, password)
 
         msg = QMessageBox()
         msg.setText('Account created successfully')
-        msg.exec_()
+        msg.exec()
 
-        login(username=self.lineEdit_username)
+        login(username=self.lineEdit_username.text())
+        self.main.override(self.lineEdit_username.text())
 
     def _checkPassword(self):
+        """
+        Checks the password entered by the user and displays a QMessageBox accordingly.
+
+        This function retrieves the username and password from the corresponding QLineEdit widgets.
+        It then calls the `checkPassword` function with the username and password as arguments.
+        If the password is correct, a QMessageBox with the text 'Success' is displayed.
+        Otherwise, a QMessageBox with the text 'Incorrect Password' is displayed.
+        After displaying the QMessageBox, the `login` function is called with the username as an argument.
+
+        Parameters:
+        - self: The instance of the class.
+
+        Return:
+        - None
+        """
         msg = QMessageBox()
         if checkPassword(self.lineEdit_username.text(), self.lineEdit_password.text()):
             msg.setText('Success')
-            msg.exec_()
+            msg.exec()
+            self.main.override(self.lineEdit_username.text())
         else:
             msg.setText('Incorrect Password')
-            msg.exec_()
+            msg.exec()
 
-        login(username=self.lineEdit_username)
+        login(username=self.lineEdit_username.text())
+
 
     def _updateMain(self):
         updateWidget = QWidget()

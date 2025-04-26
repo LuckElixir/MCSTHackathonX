@@ -3,30 +3,49 @@ from enum import Enum
 import math
 import os
 import logging
+from filesave.main import *
 
-Type = Enum('Type', [('Music', 1), ('Math', 2), ('English', 3)])
+
 
 class Tasks:
     TYPES = []
-    def __init__(self, name: str, type: Type, effort, baseHours, points, base) -> None:
+
+    def __init__(self, name: str, type, effort: int, baseHours) -> None:
         self.name = name
-        self.type = type
+        self.type: str = type
         self.baseHours = baseHours
         self.effort = effort
+        self.computePoints()
 
-    
-    def computeXP(self, hours) -> int:
-        XP = None
-        return XP
-        self.points = points
+    def computePoints(self):
+        points = 2
+        if self.effort == 3:
+            points *= 2
+        elif self.effort == 2:
+            points *= 1.5
+        else:
+            points = points
+        if self.type.lower() == "community service":
+            points *= 5
+        self.points = int(points)
+    @staticmethod
+    def notify(title, text):
+        os.system("""
+                    osascript -e 'display notification "{}" with title "{}"'
+                    """.format(text, title))
+
+
+class Profile:
+    def __init__(self, name, points=0) -> None:
         self.base = 1.6
-        self.hours: list[float] = []
-        self.completion: list[bool] = []
-        self.activityList = []
-        self.pointsList: list[list] = []
+        self.points = points
+        self.name: str = name
+        self.rank: str = self.computeRank()
+        self.tasks: list[Tasks] = []
+        self.league = self.computeRank()
+
 
     def computeLevel(self) -> int:
-        self.base = 1.6
         if self.points < 1:
             return 0
         return int(math.log(self.points, self.base) + 0.001 * self.points)
@@ -50,34 +69,14 @@ class Tasks:
             return "Ultimates League"
         return "No League"
 
-    def notify(title, text):
-        os.system("""
-                    osascript -e 'display notification "{}" with title "{}"'
-                    """.format(text, title))
+    def addTask(self, name, type, effort, baseHours):
+        self.tasks.append(Tasks(name, type, effort, baseHours))
 
+    def removeTask(self, task_name):
+        for task in self.tasks:
+            if task.name == task_name:
 
-
-
-
-
-
-
-    def log(self, time: int, activity: str, completion_input: bool):
-        while 1:
-            self.hours.append(time)
-            self.activityList.append(activity)
-            self.completion.append(completion_input)
-            self.points *= 100
-
-
-
-
-
-class Profile:
-    def __init__(self, name) -> None:
-        self.name : str = name
-        self.tasks : list[Tasks] = []
-
-
-
-
+                self.points += task.points
+                self.tasks.remove(task)
+                return
+        print(f"Task '{task_name}' not found.")
