@@ -5,37 +5,29 @@ import os
 import logging
 from filesave.main import *
 
-class Type:
-    MUSIC = 1
-    MATH = 2
-    ENGLISH = 3
-    COMMUNITY_SERVICE = 4
-class Effort:
-    LOW = 1
-    MEDIUM = 2
-    HIGH = 3
+
 
 class Tasks:
     TYPES = []
 
-    def __init__(self, name: str, type: Type, effort: Effort, baseHours, points, base) -> None:
+    def __init__(self, name: str, type, effort: int, baseHours) -> None:
         self.name = name
-        self.type: Type = type
+        self.type: str = type
         self.baseHours = baseHours
         self.effort = effort
-        self.points = self.computePoints()
+        self.computePoints()
 
     def computePoints(self):
-        points = 10
-        if self.effort == Effort.HIGH:
+        points = 2
+        if self.effort == 3:
             points *= 2
-        elif self.effort == Effort.MEDIUM:
+        elif self.effort == 2:
             points *= 1.5
         else:
             points = points
-        if self.type == Type.COMMUNITY_SERVICE:
-            points *= 3
-
+        if self.type.lower() == "community service":
+            points *= 5
+        self.points = int(points)
     @staticmethod
     def notify(title, text):
         os.system("""
@@ -46,11 +38,12 @@ class Tasks:
 class Profile:
     def __init__(self, name, points=0) -> None:
         self.base = 1.6
+        self.points = points
         self.name: str = name
         self.rank: str = self.computeRank()
         self.tasks: list[Tasks] = []
         self.league = self.computeRank()
-        self.points = points
+
 
     def computeLevel(self) -> int:
         if self.points < 1:
@@ -76,5 +69,14 @@ class Profile:
             return "Ultimates League"
         return "No League"
 
-    def addTask(self, name, ):
-        self.tasks.append(Tasks())
+    def addTask(self, name, type, effort, baseHours):
+        self.tasks.append(Tasks(name, type, effort, baseHours))
+
+    def removeTask(self, task_name):
+        for task in self.tasks:
+            if task.name == task_name:
+
+                self.points += task.points
+                self.tasks.remove(task)
+                return
+        print(f"Task '{task_name}' not found.")

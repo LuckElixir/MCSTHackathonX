@@ -8,12 +8,16 @@ def createFile():
         savefile.write("")
 
 
+def logOut():
+    with open("filesave/savefile.txt", "w+") as savefile:
+        savefile.write("")
+
 def checkLogin():
     if not os.path.isfile("filesave/savefile.txt"):
         createFile()
     login: bool
     with open("filesave/savefile.txt", "r") as savefile:
-        loginLine = savefile.readline(0)
+        loginLine = savefile.readline()
         if loginLine != "1\n":
             login = False
         else:
@@ -21,9 +25,18 @@ def checkLogin():
 
     return login
 
+def getUsername():
+    if not os.path.isfile("filesave/savefile.txt"):
+        createFile()
+    with open("filesave/savefile.txt", "r") as savefile:
+        savefile.readline()
+        username = savefile.readline()
+
+    return username[:-1]
 
 def login(username):
     replaceLine(0, "1")
+    replaceLine(1, username)
 
 
 def replaceLine(rowNum, new):
@@ -50,7 +63,7 @@ def checkPassword(username: str, inputPassword):
     # Using SHA-256
     hash_object = hashlib.sha256(encoded_string)
     hex_digest = hash_object.hexdigest()
-    if hex_digest == passwords:
+    if (hex_digest + "\n") == passwords:
         return True
     return False
 
@@ -94,6 +107,8 @@ def getPoints(username):
     """
     with open(f"filesave/{username}.txt", "r") as user:
         points = int(user.readlines()[1])
+
+    return int(points)
 
 def setPoints(username: str, newPoints: int):
     """
